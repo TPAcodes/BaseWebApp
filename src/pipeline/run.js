@@ -9,9 +9,12 @@ const { YahooPriceProvider } = require('./providers/priceProvider');
 const { GoogleNewsSearchProvider } = require('./providers/searchProvider');
 const { makeXProvider } = require('./providers/xProvider');
 const { CompanyRegistry } = require('./companies/registry');
-const { buildRegistry } = require('./build');
+const { buildRegistry, loadYaml } = require('./build');
 const { trackPrices } = require('./priceTracker');
 const { searchMovers } = require('./movementSearch');
+const { makeEngine } = require('./llm');
+const { synthesize } = require('./synthesize');
+const { render } = require('./render');
 
 /**
  * Build the runtime context (providers + IO). Exposed so tests can inject mocks.
@@ -80,7 +83,26 @@ async function run(ctx) {
   ctx.store.writeJSON(`briefs/raw/${ctx.dateISO}.json`, artifact);
   ctx.log.info(`[run] wrote briefs/raw/${ctx.dateISO}.json — ${pool.length} items`);
 
-  return artifact;
+  // 5. Synthesis: score -> six-section brief -> render (Markdown + HTML).
+  const engine = ctx.engine || makeEngine(ctx);
+  const profile = ctx.profile || loadYaml(path.join(ctx.configDir, 'profile.yaml'), {});
+  const result = await synthesize(artifact, engine, ctx, profile);
+  const { markdown, html } = render(result.brief, result.deck, {
+    date: ctx.dateISO,
+    cost: result.cost,
+    engine: result.engine,
+  });
+  ctx.store.writeText(`briefs/${ctx.dateISO}.md`, markdown);
+  ctx.store.writeText(`briefs/${ctx.dateISO}.html`, html);
+  ctx.store.writeJSON(`briefs/${ctx.dateISO}.brief.json`, {
+    brief: result.brief,
+    usage: result.usage,
+    cost: result.cost,
+    engine: result.engine,
+  });
+  ctx.log.info(`[synthesize] ${result.engine} engine · est. cost $${result.cost.toFixed(4)} · wrote briefs/${ctx.dateISO}.{md,html}`);
+
+  return { artifact, ...result, markdown };
 }
 
 if (require.main === module) {

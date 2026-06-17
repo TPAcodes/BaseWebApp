@@ -128,10 +128,34 @@ under that company's `publications`.
 | `SEC_USER_AGENT` / `CONTACT_EMAIL` | SEC requires a contact UA on EDGAR requests |
 | `APP_USER_AGENT` | UA for feed/HTTP requests |
 
+## Downstream: synthesis & output
+
+`briefs/raw/<date>.json` feeds the synthesis stage (`src/pipeline/synthesize.js`):
+
+1. **Score** every item for relevance (Haiku, or the deterministic heuristic).
+2. **Route** items into the six sections; X/podcast items go to *Voices*; price-move
+   items are force-included.
+3. **Assign citation refs** and **synthesize** the structured brief (Opus 4.8,
+   adaptive thinking, cached system prompt) — output is JSON so citations are
+   machine-checkable.
+4. **Enforce grounding** — any claim whose `refs` don't resolve to a real deck
+   item is dropped.
+5. **Render** to Markdown + HTML (`render.js`) with a resolved Sources list and a
+   movers table; written to `briefs/<date>.{md,html}`.
+
+The engine is pluggable: `AnthropicEngine` (real, tiered Haiku+Opus) when
+`ANTHROPIC_API_KEY` is set, else a deterministic `MockEngine` so the full
+pipeline runs offline. See `docs/sample-brief.md` for example output.
+
 ## Run it
 
 ```bash
 npm install
 npm run brief:smoke   # offline framework test (no network/keys)
-npm run brief:run     # full ingestion run -> briefs/raw/<date>.json
+npm run brief:demo    # end-to-end synthesis on a fixture -> docs/sample-brief.{md,html}
+npm run brief:run     # full pipeline: ingest -> prices -> synthesize -> briefs/<date>.{md,html}
 ```
+
+`brief:run` and `brief:demo` use the real models when `ANTHROPIC_API_KEY` is set,
+otherwise the mock engine (logged). Optional env: `X_BEARER_TOKEN`,
+`SEC_USER_AGENT`/`CONTACT_EMAIL`, `APP_USER_AGENT`.

@@ -1,0 +1,42 @@
+# Reader interest profile — the single tuning surface for relevance & tone.
+# Keywords are matched (case-insensitive) against item title/body for the
+# matching section to boost relevance; the LLM scorer also receives this.
+
+tone: executive          # executive (terse) | analyst (longer)
+maxPerSection: 6         # max items kept per section before synthesis
+headlineCount: 4         # bullets in "What matters most"
+
+interests:
+  ai-models:
+    - architecture
+    - training
+    - scaling
+    - reasoning
+    - benchmark
+    - model release
+    - open weights
+    - mixture of experts
+    - context window
+    - inference
+  ai-infra:
+    - gpu
+    - accelerator
+    - hbm
+    - packaging
+    - fab
+    - foundry
+    - datacenter
+    - power
+    - networking
+    - capex
+    - interconnect
+  bio-robotics:
+    - protein
+    - drug discovery
+    - clinical
+    - genomics
+    - humanoid
+    - manipulation
+    - sim-to-real
+    - embodied
+    - actuator

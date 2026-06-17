@@ -24,7 +24,7 @@ class AnthropicEngine {
       max_tokens: maxTokens,
       system: [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }],
       messages: [{ role: 'user', content: user }],
-      output_config: { format: { type: 'json_schema', schema, name: 'output' } },
+      output_config: { format: { type: 'json_schema', schema } },
     };
     if (thinking) req.thinking = { type: 'adaptive' };
     const res = await this.client.messages.create(req);

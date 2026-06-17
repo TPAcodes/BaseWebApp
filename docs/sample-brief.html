@@ -2,40 +2,40 @@
 <style>body{font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;color:#1a1a1a}h1{font-size:24px}h2{margin-top:28px;border-bottom:1px solid #eee;padding-bottom:4px}h3{margin:14px 0 4px;font-size:16px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #e3e3e3;padding:6px 8px;text-align:left;font-size:14px}td.n{text-align:right}.up{color:#0a7d2c}.down{color:#c0392b}ol.src{font-size:13px;color:#444}sup a{text-decoration:none}</style>
 <h1>Morning Brief — 2026-06-17</h1>
 <h2>What matters most</h2><ul>
-<li>OpenAI releases a smaller reasoning model with 1M context (openai-news) <sup><a href="#src-1">[1]</a></sup></li>
-<li>Linear-attention variant matches transformers at 1/3 the KV-cache (arxiv-ai) <sup><a href="#src-2">[2]</a></sup></li>
-<li>HBM supply remains the binding constraint for 2026 accelerator ramps (semianalysis) <sup><a href="#src-3">[3]</a></sup></li>
-<li>NVIDIA details next-gen rack-scale interconnect (pub:NVDA:rss:0) <sup><a href="#src-4">[4]</a></sup></li>
+<li>NVIDIA rallies 8.2% after lifting datacenter guidance; 8-K filed alongside next-gen rack-scale interconnect for trillion-parameter clusters <sup><a href="#src-3">[3]</a></sup><sup><a href="#src-5">[5]</a></sup><sup><a href="#src-8">[8]</a></sup></li>
+<li>HBM—not wafers—remains the binding constraint on 2026 accelerator ramps, with CoWoS packaging allocation the gate <sup><a href="#src-4">[4]</a></sup><sup><a href="#src-9">[9]</a></sup></li>
+<li>Architecture inflection: OpenAI ships a smaller 1M-context reasoning model while a linear-attention variant matches transformers at 1/3 the KV-cache <sup><a href="#src-1">[1]</a></sup><sup><a href="#src-2">[2]</a></sup></li>
+<li>AI-for-science advances: validated protein binders and sim-to-real dexterous manipulation <sup><a href="#src-6">[6]</a></sup><sup><a href="#src-7">[7]</a></sup></li>
 </ul>
 <h2>AI models &amp; architecture</h2>
-<h3>OpenAI releases a smaller reasoning model with 1M context <sup><a href="#src-1">[1]</a></sup></h3><p>New model targets long-context reasoning at lower inference cost; open weights for research.</p>
-<h3>Linear-attention variant matches transformers at 1/3 the KV-cache <sup><a href="#src-2">[2]</a></sup></h3><p>Architecture change reduces memory bandwidth pressure during decoding.</p>
+<h3>OpenAI ships smaller 1M-context reasoning model <sup><a href="#src-1">[1]</a></sup><sup><a href="#src-10">[10]</a></sup></h3><p>OpenAI released a smaller reasoning model targeting long-context inference at lower cost, with open weights for research. Karpathy argues long-context done right reduces reliance on retrieval hacks and reshapes agent design.</p>
+<h3>Linear-attention variant cuts KV-cache by two-thirds <sup><a href="#src-2">[2]</a></sup></h3><p>A new architecture matches transformer quality while using 1/3 the KV-cache, easing memory-bandwidth pressure during decoding—directly relevant to the HBM constraint gating accelerator output.</p>
 <h2>AI infrastructure</h2>
-<h3>HBM supply remains the binding constraint for 2026 accelerator ramps <sup><a href="#src-3">[3]</a></sup></h3><p>Packaging (CoWoS) and HBM3E allocation, not wafers, gate datacenter GPU output.</p>
-<h3>NVIDIA details next-gen rack-scale interconnect <sup><a href="#src-4">[4]</a></sup></h3><p>Higher NVLink bandwidth aimed at trillion-parameter training clusters.</p>
-<h3>NVIDIA jumps after raising datacenter guidance <sup><a href="#src-5">[5]</a></sup></h3><p>Shares rallied as the company lifted its outlook on AI accelerator demand.</p>
+<h3>NVIDIA raises datacenter guidance <sup><a href="#src-3">[3]</a></sup></h3><p>NVIDIA lifted its outlook on AI accelerator demand, driving the share rally. Forward guidance signals continued strength in datacenter GPU demand.</p>
+<h3>HBM and packaging are the 2026 bottleneck <sup><a href="#src-4">[4]</a></sup><sup><a href="#src-9">[9]</a></sup></h3><p>SemiAnalysis and Dylan Patel concur: HBM3E and CoWoS packaging allocation—not wafer supply—gate datacenter GPU output through 2026. Packaging allocation is the metric to watch.</p>
+<h3>Next-gen rack-scale interconnect detailed <sup><a href="#src-5">[5]</a></sup></h3><p>NVIDIA outlined higher NVLink bandwidth aimed at trillion-parameter training clusters, extending its system-level moat beyond the GPU die.</p>
 <h2>AI × biology &amp; robotics</h2>
-<h3>Humanoid startup shows dexterous manipulation trained mostly in sim <sup><a href="#src-6">[6]</a></sup></h3><p>Sim-to-real transfer closes the gap on contact-rich tasks.</p>
-<h3>Protein-design model improves binder success rate in wet-lab tests <sup><a href="#src-7">[7]</a></sup></h3><p>Generative model proposes binders later validated experimentally.</p>
+<h3>Generative protein design validated in wet lab <sup><a href="#src-6">[6]</a></sup></h3><p>A protein-design model improved binder success rates, with proposed binders confirmed experimentally—evidence that generative bio models are crossing into reliable lab utility.</p>
+<h3>Humanoid dexterity trained mostly in simulation <sup><a href="#src-7">[7]</a></sup></h3><p>A humanoid startup demonstrated contact-rich dexterous manipulation with sim-to-real transfer, narrowing the gap on tasks that have resisted automation.</p>
 <h2>Public equities (tech)</h2>
-<h3>8-K — NVIDIA (Results of Operations) <sup><a href="#src-8">[8]</a></sup></h3><p>Regulated disclosure filed with the SEC.</p>
+<h3>NVIDIA files 8-K on results of operations <sup><a href="#src-8">[8]</a></sup><sup><a href="#src-3">[3]</a></sup></h3><p>NVIDIA filed an 8-K covering results of operations, coinciding with raised datacenter guidance and the share rally.</p>
 <h2>Voices &amp; interviews</h2>
-<h3>@dylan522p: HBM is the gating input into 2026 — not wafers. <sup><a href="#src-9">[9]</a></sup></h3><p>HBM is the gating input into 2026 — not wafers. Watch packaging allocation.</p>
-<h3>@karpathy: long-context done right changes how we build agents. <sup><a href="#src-10">[10]</a></sup></h3><p>Long-context done right changes how we build agents — fewer retrieval hacks.</p>
+<h3>Patel: HBM gates 2026, watch packaging <sup><a href="#src-9">[9]</a></sup></h3><p>Dylan Patel reiterates HBM—not wafers—is the gating input into 2026 and to monitor packaging allocation.</p>
+<h3>Karpathy: long-context reshapes agents <sup><a href="#src-10">[10]</a></sup></h3><p>Karpathy says long-context done right changes how agents are built, cutting retrieval hacks.</p>
 <h2>Markets — movers</h2><table><tr><th>Ticker</th><th>Move</th><th>Vol z</th><th>Note</th></tr>
-<tr><td>NVDA</td><td class="n up">+8.2%</td><td class="n">2.6</td><td>Up 8.2% on 2.6σ volume — see linked coverage. <sup><a href="#src-5">[5]</a></sup></td></tr>
-<tr><td>MU</td><td class="n down">-5.1%</td><td class="n">1.2</td><td>Down 5.1% — no clear catalyst surfaced.</td></tr>
+<tr><td>NVDA</td><td class="n up">+8.2%</td><td class="n">2.6</td><td>Rally driven by raised datacenter guidance and an 8-K on results of operations, reinforced by next-gen rack-scale interconnect details. <sup><a href="#src-3">[3]</a></sup><sup><a href="#src-8">[8]</a></sup><sup><a href="#src-5">[5]</a></sup></td></tr>
+<tr><td>MU</td><td class="n down">-5.1%</td><td class="n">1.2</td><td>No direct catalyst in the deck; weakness may reflect HBM-allocation dynamics flagged as the 2026 bottleneck, but this is not explicitly confirmed by a cited item. <sup><a href="#src-4">[4]</a></sup><sup><a href="#src-9">[9]</a></sup></td></tr>
 </table>
 <h2>Sources</h2><ol class="src">
 <li id="src-1" value="1"><a href="https://openai.com/news/reasoning-mini">OpenAI releases a smaller reasoning model with 1M context</a> — openai-news</li>
 <li id="src-2" value="2"><a href="https://arxiv.org/abs/2606.00001">Linear-attention variant matches transformers at 1/3 the KV-cache</a> — arxiv-ai</li>
-<li id="src-3" value="3"><a href="https://semianalysis.com/hbm-2026">HBM supply remains the binding constraint for 2026 accelerator ramps</a> — semianalysis</li>
-<li id="src-4" value="4"><a href="https://blogs.nvidia.com/interconnect">NVIDIA details next-gen rack-scale interconnect</a> — pub:NVDA:rss:0</li>
-<li id="src-5" value="5"><a href="https://news.example/nvda-guidance">NVIDIA jumps after raising datacenter guidance</a> — news-search</li>
-<li id="src-6" value="6"><a href="https://spectrum.ieee.org/humanoid-sim2real">Humanoid startup shows dexterous manipulation trained mostly in sim</a> — ieee-robotics</li>
-<li id="src-7" value="7"><a href="https://arxiv.org/abs/2606.00002">Protein-design model improves binder success rate in wet-lab tests</a> — arxiv-bio</li>
+<li id="src-3" value="3"><a href="https://news.example/nvda-guidance">NVIDIA jumps after raising datacenter guidance</a> — news-search</li>
+<li id="src-4" value="4"><a href="https://semianalysis.com/hbm-2026">HBM supply remains the binding constraint for 2026 accelerator ramps</a> — semianalysis</li>
+<li id="src-5" value="5"><a href="https://blogs.nvidia.com/interconnect">NVIDIA details next-gen rack-scale interconnect</a> — pub:NVDA:rss:0</li>
+<li id="src-6" value="6"><a href="https://arxiv.org/abs/2606.00002">Protein-design model improves binder success rate in wet-lab tests</a> — arxiv-bio</li>
+<li id="src-7" value="7"><a href="https://spectrum.ieee.org/humanoid-sim2real">Humanoid startup shows dexterous manipulation trained mostly in sim</a> — ieee-robotics</li>
 <li id="src-8" value="8"><a href="https://sec.gov/Archives/edgar/data/1045810/000/nvda-8k.htm">8-K — NVIDIA (Results of Operations)</a> — sec:NVDA</li>
 <li id="src-9" value="9"><a href="https://x.com/dylan522p/status/1">@dylan522p: HBM is the gating input into 2026 — not wafers.</a> — x-thought-leaders</li>
 <li id="src-10" value="10"><a href="https://x.com/karpathy/status/2">@karpathy: long-context done right changes how we build agents.</a> — x-thought-leaders</li>
 </ol>
-<hr><p style="color:#888;font-size:12px">Generated by the mock engine · est. cost $0.0000</p>
+<hr><p style="color:#888;font-size:12px">Generated by the anthropic engine · est. cost $0.0473</p>

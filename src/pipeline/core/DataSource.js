@@ -30,8 +30,12 @@ class DataSource {
         if (m) items.push(finalizeItem(m, this.traits));
       }
     }
-    const cutoff = ctx.now - this.traits.lookbackHours * 3600 * 1000;
-    const fresh = items.filter((it) => !it.publishedAt || +new Date(it.publishedAt) >= cutoff);
+    // Prefer the run-level recency window when present; else per-source lookback.
+    const cutoff = ctx.windowStart != null ? ctx.windowStart : ctx.now - this.traits.lookbackHours * 3600 * 1000;
+    const dropUndated = ctx.windowStart != null && ctx.dropUndated !== false;
+    const fresh = items.filter((it) =>
+      it.publishedAt ? +new Date(it.publishedAt) >= cutoff : !dropUndated
+    );
     return fresh.slice(0, this.traits.maxItems);
   }
 }

@@ -25,6 +25,7 @@ const cite = (refs) => ((refs && refs.length) ? ' ' + refs.map((r) => `[${r}]`).
 
 function toMarkdown(brief, byRef, usedRefs, date, meta) {
   const L = [`# Morning Brief — ${date}`, ''];
+  if (meta.coverage) L.push(`_Covering ${meta.coverage}_`, '');
 
   L.push('## What matters most', '');
   for (const h of brief.headline || []) L.push(`- ${h.text}${cite(h.refs)}`);
@@ -73,6 +74,7 @@ function toHtml(brief, byRef, usedRefs, date, meta) {
       'td.n{text-align:right}.up{color:#0a7d2c}.down{color:#c0392b}ol.src{font-size:13px;color:#444}sup a{text-decoration:none}</style>'
   );
   P.push(`<h1>Morning Brief — ${esc(date)}</h1>`);
+  if (meta.coverage) P.push(`<p style="color:#888;font-size:13px;margin-top:-8px">Covering ${esc(meta.coverage)}</p>`);
 
   P.push('<h2>What matters most</h2><ul>');
   for (const h of brief.headline || []) P.push(`<li>${esc(h.text)}${sup(h.refs)}</li>`);

@@ -6,6 +6,13 @@ tone: executive          # executive (terse) | analyst (longer)
 maxPerSection: 6         # max items kept per section before synthesis
 headlineCount: 4         # bullets in "What matters most"
 
+# Recency window — the brief covers only this span (default: yesterday -> now,
+# with Monday reaching back over the weekend). Nothing older is included.
+window:
+  timezone: America/New_York
+  # hours: 24            # uncomment for a fixed rolling window instead of calendar
+  dropUndated: true      # exclude items with no publish timestamp (can't date -> can't trust as "yesterday")
+
 interests:
   ai-models:
     - architecture

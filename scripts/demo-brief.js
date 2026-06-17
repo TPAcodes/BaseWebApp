@@ -16,6 +16,7 @@ const { makeEngine } = require('../src/pipeline/llm');
 const { synthesize } = require('../src/pipeline/synthesize');
 const { render } = require('../src/pipeline/render');
 const { loadYaml } = require('../src/pipeline/build');
+const { computeWindow } = require('../src/pipeline/window');
 
 const now = new Date().toISOString();
 const repoRoot = path.resolve(__dirname, '..');
@@ -96,8 +97,10 @@ async function main() {
   const engine = makeEngine(ctx);
   const profile = loadYaml(path.join(ctx.configDir, 'profile.yaml'), {});
   const result = await synthesize(artifact, engine, ctx, profile);
+  const win = computeWindow({ timeZone: (profile.window && profile.window.timezone) || 'America/New_York' });
   const { markdown, html } = render(result.brief, result.deck, {
     date: artifact.dateISO,
+    coverage: win.label,
     cost: result.cost,
     engine: result.engine,
   });

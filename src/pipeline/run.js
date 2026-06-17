@@ -16,6 +16,7 @@ const { makeEngine } = require('./llm');
 const { synthesize } = require('./synthesize');
 const { render } = require('./render');
 const { makeDeliverer } = require('./deliver/email');
+const { computeWindow, filterWindow } = require('./window');
 
 /**
  * Build the runtime context (providers + IO). Exposed so tests can inject mocks.
@@ -55,9 +56,27 @@ function makeContext(overrides = {}) {
  */
 async function run(ctx) {
   ctx.companies = ctx.companies || CompanyRegistry.load(path.join(ctx.configDir, 'companies.yaml'));
+  const profile = ctx.profile || loadYaml(path.join(ctx.configDir, 'profile.yaml'), {});
   const registry = ctx.registry || buildRegistry({ configDir: ctx.configDir, companies: ctx.companies });
 
-  ctx.log.info(`[run] ${ctx.dateISO} — ${registry.list().length} sources, ${ctx.companies.tickers().length} tickers`);
+  // Recency window: cover only "yesterday → now" (weekend-aware), enforced
+  // across every source so the brief is never padded with stale items.
+  if (ctx.windowStart == null) {
+    const w = (profile.window) || {};
+    const win = computeWindow({
+      now: new Date(ctx.now),
+      timeZone: process.env.BRIEF_TZ || w.timezone || 'America/New_York',
+      hours: process.env.BRIEF_WINDOW_HOURS || w.hours || null,
+    });
+    ctx.windowStart = win.windowStart;
+    ctx.windowEnd = win.windowEnd;
+    ctx.windowLabel = win.label;
+    ctx.dropUndated = w.dropUndated !== false; // default: drop items with no timestamp
+  }
+
+  ctx.log.info(
+    `[run] ${ctx.dateISO} — ${registry.list().length} sources, ${ctx.companies.tickers().length} tickers · window: ${ctx.windowLabel}`
+  );
 
   // 1. Systematic price tracking (whole watchlist, every run).
   const prices = await trackPrices(ctx.companies, ctx);
@@ -70,13 +89,17 @@ async function run(ctx) {
   // 3. Collect every source (errors isolated per source).
   const { items, stats } = await registry.collectAll(ctx);
 
-  // 4. Dedupe + cluster the combined pool.
-  const pool = dedupe([...items, ...moverItems]);
+  // 4. Enforce the recency window across the whole pool, then dedupe + cluster.
+  const combined = [...items, ...moverItems];
+  const fresh = filterWindow(combined, ctx);
+  const pool = dedupe(fresh);
+  ctx.log.info(`[run] ${combined.length} collected -> ${fresh.length} in-window -> ${pool.length} after dedupe`);
 
   const artifact = {
     generatedAt: new Date().toISOString(),
     dateISO: ctx.dateISO,
-    counts: { sources: registry.list().length, rawItems: items.length, moverItems: moverItems.length, deduped: pool.length },
+    window: { start: new Date(ctx.windowStart).toISOString(), end: new Date(ctx.windowEnd).toISOString(), label: ctx.windowLabel },
+    counts: { sources: registry.list().length, rawItems: items.length, moverItems: moverItems.length, inWindow: fresh.length, deduped: pool.length },
     movers: prices.movers,
     sourceStats: stats,
     items: pool,
@@ -86,10 +109,10 @@ async function run(ctx) {
 
   // 5. Synthesis: score -> six-section brief -> render (Markdown + HTML).
   const engine = ctx.engine || makeEngine(ctx);
-  const profile = ctx.profile || loadYaml(path.join(ctx.configDir, 'profile.yaml'), {});
   const result = await synthesize(artifact, engine, ctx, profile);
   const { markdown, html } = render(result.brief, result.deck, {
     date: ctx.dateISO,
+    coverage: ctx.windowLabel,
     cost: result.cost,
     engine: result.engine,
   });

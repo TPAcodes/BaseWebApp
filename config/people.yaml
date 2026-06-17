@@ -1,0 +1,19 @@
+# X / Twitter thought leaders to track. Requires an X provider with credentials
+# (set X_BEARER_TOKEN); without it these are skipped with a warning — the rest
+# of the pipeline runs fine. See docs/data-sources.md "X / Twitter access".
+
+category: general
+limitPerHandle: 8
+weight: 0.55
+
+handles:
+  - { handle: dylan522p,      name: "Dylan Patel (SemiAnalysis)", topics: [ai-infra, semiconductors] }
+  - { handle: karpathy,       name: "Andrej Karpathy",            topics: [ai-models] }
+  - { handle: ylecun,         name: "Yann LeCun",                 topics: [ai-models] }
+  - { handle: ID_AA_Carmack,  name: "John Carmack",               topics: [ai-models] }
+  - { handle: DrJimFan,       name: "Jim Fan",                    topics: [bio-robotics, ai-models] }
+  - { handle: sama,           name: "Sam Altman",                 topics: [ai-models, ai-infra] }
+  - { handle: gdb,            name: "Greg Brockman",              topics: [ai-models] }
+  - { handle: _jasonwei,      name: "Jason Wei",                  topics: [ai-models] }
+  - { handle: EMostaque,      name: "Emad Mostaque",              topics: [ai-models, ai-infra] }
+  - { handle: alexandr_wang,  name: "Alexandr Wang",              topics: [ai-models, ai-infra] }

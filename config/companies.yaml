@@ -1,0 +1,119 @@
+# Watchlist — the source of truth for systematic price + publication tracking.
+#
+# For each company:
+#   - prices are snapshotted EVERY run (see priceTracker.js)
+#   - each `publications` channel becomes a data source (RSS feed or X account)
+#   - `secCik` adds a SEC EDGAR source (guaranteed regulated disclosures)
+#
+# Add a company by adding an entry. `secCik` and `feedUrl` values below are
+# starting points — verify each against SEC EDGAR / the publisher.
+
+companies:
+  - ticker: NVDA
+    name: NVIDIA
+    aliases: [Nvidia]
+    sector: Semiconductors
+    secCik: "0001045810"
+    publications:
+      - { kind: rss, category: ai-infra, trustTier: primary, feedUrl: "https://blogs.nvidia.com/feed/" }
+      - { kind: x, handle: nvidia, topics: [ai-infra] }
+
+  - ticker: TSM
+    name: TSMC
+    aliases: [Taiwan Semiconductor]
+    sector: Semiconductors (Foundry)
+    secCik: "0001046179"
+    secForms: ["6-K", "20-F"]
+    publications:
+      - { kind: x, handle: TSMCglobal, topics: [ai-infra, fabs] }
+
+  - ticker: AMD
+    name: AMD
+    aliases: [Advanced Micro Devices]
+    sector: Semiconductors
+    secCik: "0000002488"
+    publications:
+      - { kind: x, handle: AMD, topics: [ai-infra] }
+
+  - ticker: AVGO
+    name: Broadcom
+    sector: Semiconductors
+    secCik: "0001730168"
+    publications:
+      - { kind: x, handle: Broadcom, topics: [ai-infra, networking] }
+
+  - ticker: ASML
+    name: ASML
+    sector: Semiconductor Equipment
+    secCik: "0000937966"
+    secForms: ["6-K", "20-F"]
+    publications:
+      - { kind: x, handle: ASMLcompany, topics: [ai-infra, fabs] }
+
+  - ticker: MU
+    name: Micron
+    sector: Memory
+    secCik: "0000723125"
+    publications:
+      - { kind: x, handle: MicronTech, topics: [ai-infra, hbm] }
+
+  - ticker: ARM
+    name: Arm Holdings
+    sector: Semiconductor IP
+    secCik: "0001973239"
+    publications:
+      - { kind: x, handle: Arm, topics: [ai-infra] }
+
+  - ticker: MSFT
+    name: Microsoft
+    sector: Software / Cloud
+    secCik: "0000789019"
+    publications:
+      - { kind: rss, category: ai-models, feedUrl: "https://blogs.microsoft.com/feed/" }
+      - { kind: x, handle: Microsoft, topics: [ai-models, ai-infra] }
+
+  - ticker: GOOGL
+    name: Alphabet
+    aliases: [Google]
+    sector: Software / Cloud
+    secCik: "0001652044"
+    publications:
+      - { kind: rss, category: ai-models, feedUrl: "https://blog.google/rss/" }
+      - { kind: x, handle: Google, topics: [ai-models] }
+
+  - ticker: META
+    name: Meta
+    aliases: [Facebook]
+    sector: Software / AI
+    secCik: "0001326801"
+    publications:
+      - { kind: x, handle: AIatMeta, topics: [ai-models] }
+
+  - ticker: AMZN
+    name: Amazon
+    sector: Software / Cloud
+    secCik: "0001018724"
+    publications:
+      - { kind: x, handle: awscloud, topics: [ai-infra] }
+
+  - ticker: AAPL
+    name: Apple
+    sector: Consumer Hardware
+    secCik: "0000320193"
+    publications:
+      - { kind: rss, category: ai-models, feedUrl: "https://www.apple.com/newsroom/rss-feed.rss" }
+      - { kind: x, handle: Apple, topics: [] }
+
+  - ticker: TSLA
+    name: Tesla
+    sector: Robotics / Auto
+    secCik: "0001318605"
+    publications:
+      - { kind: x, handle: Tesla, topics: [bio-robotics] }
+
+  - ticker: PLTR
+    name: Palantir
+    sector: Software / AI
+    secCik: "0001321655"
+    publications:
+      - { kind: x, handle: PalantirTech, topics: [ai-models] }

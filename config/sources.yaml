@@ -1,0 +1,73 @@
+# Static data sources. Each entry names a registered KIND and customizes its
+# canonical traits (see docs/data-sources.md). Add a source by adding an entry.
+#
+# NOTE: feedUrls are best-effort and should be verified against each publisher;
+# a dead feed is isolated at runtime (it just yields nothing) and easy to fix.
+
+sources:
+  # --- AI infrastructure (chips / fabs / power / datacenters) -------------------
+  - id: semianalysis
+    name: SemiAnalysis
+    kind: rss
+    category: ai-infra
+    trustTier: primary
+    weight: 0.9
+    topics: [semiconductors, datacenter, hbm, power]
+    options: { feedUrl: "https://www.semianalysis.com/feed" }
+
+  - id: ieee-robotics
+    name: IEEE Spectrum — Robotics
+    kind: rss
+    category: bio-robotics
+    trustTier: press
+    options: { feedUrl: "https://spectrum.ieee.org/feeds/topic/robotics.rss" }
+
+  # --- AI models & architecture (labs) -----------------------------------------
+  - id: openai-news
+    name: OpenAI
+    kind: rss
+    category: ai-models
+    trustTier: primary
+    weight: 0.85
+    options: { feedUrl: "https://openai.com/news/rss.xml" }
+
+  - id: google-ai-blog
+    name: Google — AI
+    kind: rss
+    category: ai-models
+    trustTier: primary
+    options: { feedUrl: "https://blog.google/technology/ai/rss/" }
+
+  - id: deepmind-blog
+    name: Google DeepMind
+    kind: rss
+    category: ai-models
+    trustTier: primary
+    options: { feedUrl: "https://deepmind.google/blog/rss.xml" }
+
+  # --- Papers -------------------------------------------------------------------
+  - id: arxiv-ai
+    name: arXiv — AI / ML / NLP
+    kind: arxiv
+    category: ai-models
+    weight: 0.6
+    options: { categories: [cs.LG, cs.AI, cs.CL], maxResults: 50 }
+
+  - id: arxiv-robotics
+    name: arXiv — Robotics
+    kind: arxiv
+    category: bio-robotics
+    options: { categories: [cs.RO], maxResults: 30 }
+
+  - id: arxiv-bio
+    name: arXiv — Quantitative Biology
+    kind: arxiv
+    category: bio-robotics
+    options: { categories: [q-bio.BM, q-bio.QM], maxResults: 25 }
+
+  # --- General signal -----------------------------------------------------------
+  - id: hackernews
+    name: Hacker News (front page)
+    kind: hackernews
+    category: general
+    options: { minScore: 150, pages: 90 }

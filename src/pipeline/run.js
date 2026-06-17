@@ -15,6 +15,7 @@ const { searchMovers } = require('./movementSearch');
 const { makeEngine } = require('./llm');
 const { synthesize } = require('./synthesize');
 const { render } = require('./render');
+const { makeDeliverer } = require('./deliver/email');
 
 /**
  * Build the runtime context (providers + IO). Exposed so tests can inject mocks.
@@ -102,7 +103,20 @@ async function run(ctx) {
   });
   ctx.log.info(`[synthesize] ${result.engine} engine · est. cost $${result.cost.toFixed(4)} · wrote briefs/${ctx.dateISO}.{md,html}`);
 
-  return { artifact, ...result, markdown };
+  // 6. Deliver (email if configured; no-op otherwise).
+  const deliverer = ctx.deliverer || makeDeliverer(process.env, ctx.log);
+  try {
+    const res = await deliverer.send({
+      subject: `Morning Brief — ${ctx.dateISO}`,
+      html,
+      text: markdown,
+    });
+    if (res.ok) ctx.log.info(`[deliver] sent via ${deliverer.name} to configured recipient`);
+  } catch (e) {
+    ctx.log.warn(`[deliver] send failed: ${e.message}`);
+  }
+
+  return { artifact, ...result, markdown, html };
 }
 
 if (require.main === module) {

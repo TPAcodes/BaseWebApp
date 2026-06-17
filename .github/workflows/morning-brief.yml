@@ -1,0 +1,73 @@
+name: Morning Brief
+
+# Runs the full pipeline on open network (no sandbox allowlist), commits the
+# brief to the repo as an archive, and emails it.
+#
+# NOTE: scheduled runs only fire from the repo's DEFAULT branch — merge this
+# workflow to the default branch for the cron to take effect. Use the manual
+# "Run workflow" button (workflow_dispatch) to test from any branch first.
+
+on:
+  schedule:
+    - cron: '0 11 * * 1-5' # 11:00 UTC, weekdays (~06:00–07:00 US Eastern). Adjust as needed.
+  workflow_dispatch: {}
+
+permissions:
+  contents: write # to commit the generated brief back to the repo
+
+concurrency:
+  group: morning-brief
+  cancel-in-progress: false
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # Models / LLM (required for real synthesis; falls back to mock if unset)
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      # Optional X / Twitter ingestion
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      # SEC requires a contact User-Agent
+      CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
+      SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+      APP_USER_AGENT: ${{ vars.APP_USER_AGENT }}
+      # Email delivery (optional; omit to skip emailing)
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      BRIEF_EMAIL_FROM: ${{ secrets.BRIEF_EMAIL_FROM }}
+      BRIEF_EMAIL_TO: ${{ vars.BRIEF_EMAIL_TO }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Generate brief
+        run: npm run brief:run
+
+      - name: Commit brief archive
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add briefs data/prices
+          if git diff --cached --quiet; then
+            echo "No brief changes to commit."
+          else
+            git commit -m "brief: $(date -u +%Y-%m-%d) [skip ci]"
+            git push
+          fi
+
+      - name: Upload brief as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: morning-brief
+          path: briefs/*.html
+          if-no-files-found: ignore

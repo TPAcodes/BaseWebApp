@@ -4,3 +4,8 @@ Dockerfile
 docker-compose.yml
 .DS_Store
 package-lock.json
+
+# Generated pipeline outputs. Ignored so local/dev runs don't dirty the tree;
+# the GitHub Actions workflow force-adds them (git add -f) to commit the archive.
+briefs/
+data/
